@@ -1,4 +1,4 @@
-package com.study.jvm_bottom_study.highconcurrence.cas;
+package com.study.jvm_bottom_study.highconcurrence.casDemo;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicStampedReference;

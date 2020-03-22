@@ -13,7 +13,12 @@
         </dependency>
     </dependencies>
 ```
-
+ Obect o = new Object();占多少字节?
+![objectByte.jpg](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/objectByte.jpg)
+![objectByte.jpg](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/objectLayOut.jpg)
+-XX:+UseCompressedClassPointers ：表示指向对象指向所属class类型采用了压缩，由8字节压缩成4字节
+-XX:+UseCompressedOops ： 表示栈中该对象的引用也采用了压缩变成了4个字节
+所以一个Object所占字节为markword的8个字节+class printer的4个字节+0为12个字节，但是jvm是64位需要补齐8个字节才能读，所以一个object是16个字节
 
 
 jdk8u: markOop.hpp
@@ -62,132 +67,7 @@ monitorenter moniterexit
 
 ## JVM层级（Hotspot）
 
-```java
-package com.mashibing.insidesync;
-
-import org.openjdk.jol.info.ClassLayout;
-
-public class T01_Sync1 {
-  
-
-    public static void main(String[] args) {
-        Object o = new Object();
-
-        System.out.println(ClassLayout.parseInstance(o).toPrintable());
-    }
-}
-```
-
-```java
-com.mashibing.insidesync.T01_Sync1$Lock object internals:
- OFFSET  SIZE   TYPE DESCRIPTION                               VALUE
-      0     4   (object header)  05 00 00 00 (00000101 00000000 00000000 00000000) (5)
-      4     4   (object header)  00 00 00 00 (00000000 00000000 00000000 00000000) (0)
-      8     4   (object header)  49 ce 00 20 (01001001 11001110 00000000 00100000) (536923721)
-     12     4        (loss due to the next object alignment)
-Instance size: 16 bytes
-Space losses: 0 bytes internal + 4 bytes external = 4 bytes total
-```
-
-```java
-com.mashibing.insidesync.T02_Sync2$Lock object internals:
- OFFSET  SIZE   TYPE DESCRIPTION                               VALUE
-      0     4   (object header)  05 90 2e 1e (00000101 10010000 00101110 00011110) (506368005)
-      4     4   (object header)  1b 02 00 00 (00011011 00000010 00000000 00000000) (539)
-      8     4   (object header)  49 ce 00 20 (01001001 11001110 00000000 00100000) (536923721)
-     12     4        (loss due to the next object alignment)
-Instance size: 16 bytes
-Space losses: 0 bytes internal + 4 bytes external = 4 bytes tota
-```
-
 InterpreterRuntime:: monitorenter方法
-
-```c++
-IRT_ENTRY_NO_ASYNC(void, InterpreterRuntime::monitorenter(JavaThread* thread, BasicObjectLock* elem))
-#ifdef ASSERT
-  thread->last_frame().interpreter_frame_verify_monitor(elem);
-#endif
-  if (PrintBiasedLockingStatistics) {
-    Atomic::inc(BiasedLocking::slow_path_entry_count_addr());
-  }
-  Handle h_obj(thread, elem->obj());
-  assert(Universe::heap()->is_in_reserved_or_null(h_obj()),
-         "must be NULL or an object");
-  if (UseBiasedLocking) {
-    // Retry fast entry if bias is revoked to avoid unnecessary inflation
-    ObjectSynchronizer::fast_enter(h_obj, elem->lock(), true, CHECK);
-  } else {
-    ObjectSynchronizer::slow_enter(h_obj, elem->lock(), CHECK);
-  }
-  assert(Universe::heap()->is_in_reserved_or_null(elem->obj()),
-         "must be NULL or an object");
-#ifdef ASSERT
-  thread->last_frame().interpreter_frame_verify_monitor(elem);
-#endif
-IRT_END
-```
-
-synchronizer.cpp
-
-revoke_and_rebias
-
-```c++
-void ObjectSynchronizer::fast_enter(Handle obj, BasicLock* lock, bool attempt_rebias, TRAPS) {
- if (UseBiasedLocking) {
-    if (!SafepointSynchronize::is_at_safepoint()) {
-      BiasedLocking::Condition cond = BiasedLocking::revoke_and_rebias(obj, attempt_rebias, THREAD);
-      if (cond == BiasedLocking::BIAS_REVOKED_AND_REBIASED) {
-        return;
-      }
-    } else {
-      assert(!attempt_rebias, "can not rebias toward VM thread");
-      BiasedLocking::revoke_at_safepoint(obj);
-    }
-    assert(!obj->mark()->has_bias_pattern(), "biases should be revoked by now");
- }
-
- slow_enter (obj, lock, THREAD) ;
-}
-```
-
-```c++
-void ObjectSynchronizer::slow_enter(Handle obj, BasicLock* lock, TRAPS) {
-  markOop mark = obj->mark();
-  assert(!mark->has_bias_pattern(), "should not see bias pattern here");
-
-  if (mark->is_neutral()) {
-    // Anticipate successful CAS -- the ST of the displaced mark must
-    // be visible <= the ST performed by the CAS.
-    lock->set_displaced_header(mark);
-    if (mark == (markOop) Atomic::cmpxchg_ptr(lock, obj()->mark_addr(), mark)) {
-      TEVENT (slow_enter: release stacklock) ;
-      return ;
-    }
-    // Fall through to inflate() ...
-  } else
-  if (mark->has_locker() && THREAD->is_lock_owned((address)mark->locker())) {
-    assert(lock != mark->locker(), "must not re-lock the same lock");
-    assert(lock != (BasicLock*)obj->mark(), "don't relock with same BasicLock");
-    lock->set_displaced_header(NULL);
-    return;
-  }
-
-#if 0
-  // The following optimization isn't particularly useful.
-  if (mark->has_monitor() && mark->monitor()->is_entered(THREAD)) {
-    lock->set_displaced_header (NULL) ;
-    return ;
-  }
-#endif
-
-  // The object header will never be displaced to this lock,
-  // so it does not matter what the value is, except that it
-  // must be non-zero to avoid looking like a re-entrant lock,
-  // and must not look locked either.
-  lock->set_displaced_header(markOopDesc::unused_mark());
-  ObjectSynchronizer::inflate(THREAD, obj())->enter(THREAD);
-}
-```
 
 inflate方法：膨胀为重量级锁
 
@@ -195,13 +75,13 @@ inflate方法：膨胀为重量级锁
 
 # 锁升级过程
 
-![图片失败说明](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584694355115&di=efcfdde54b7be76926321f2955e922e7&imgtype=0&src=http%3A%2F%2Fcdn.qiancipai.com%2F190305170514872174.jpg)
+![lockUpGrade](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/lockUpGrade.png)
 
 ## JDK8 markword实现表：
 
-![markword](./markword.png)
+![markword](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/markword.jpg)
 
-
+把分代年龄调大为31解决频繁GC问题可以吗？不可以因为分代年龄只有4位，最大就15
 
 无锁 - 偏向锁 - 轻量级锁 （自旋锁，自适应自旋）- 重量级锁
 

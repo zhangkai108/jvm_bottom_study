@@ -1,4 +1,4 @@
-package com.study.jvm_bottom_study.highconcurrence.cas;
+package com.study.jvm_bottom_study.highconcurrence.casDemo;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * CAS锁会导致ABA问题
  *
- * @param param
  * @author 张凯（工号：300379）
  * @since 2020/3/17 9:46
  * @version 1.0.0
