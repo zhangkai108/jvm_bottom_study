@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 将csv文件批量处理成sql文件导入数据库
+ */
 public class CSV2OracleUtils {
 
 
