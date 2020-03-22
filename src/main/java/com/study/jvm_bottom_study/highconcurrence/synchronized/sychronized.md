@@ -195,7 +195,7 @@ inflate方法：膨胀为重量级锁
 
 # 锁升级过程
 
-
+![图片失败说明](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584694355115&di=efcfdde54b7be76926321f2955e922e7&imgtype=0&src=http%3A%2F%2Fcdn.qiancipai.com%2F190305170514872174.jpg)
 
 ## JDK8 markword实现表：
 

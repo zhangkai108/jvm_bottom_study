@@ -3,6 +3,14 @@ package com.study.jvm_bottom_study.highconcurrence.cas;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicStampedReference;
 
+/**
+ * ABA问题的解决
+ *
+ * @author 张凯（工号：300379）
+ * @since 2020/3/17 9:46
+ * @version 1.0.0
+ * @copyright 南京亚信网络科技公司
+ */
 public class ABASolveDemo {
     //static AtomicReference<Integer> atomicReference = new AtomicReference<Integer>(100);
     static AtomicStampedReference<Integer> atomicStampedReference = new AtomicStampedReference<>(100,1);
