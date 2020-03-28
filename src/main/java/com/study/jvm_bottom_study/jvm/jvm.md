@@ -11,7 +11,7 @@ GC类型![GCType](https://github.com/zhangkai108/jvm_bottom_study/blob/master/sr
 
 jdk1.8 默认ps+po![ps+po](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/1.8gc.png)
 
-分代回收：
+分代回收：新生代：老年代=1：2
 young区的垃圾回收器：
 - serial：是单线程的，SWT(stop the world所有的工作线程停止),采用copying算法回收,几十兆内存，所以现在看不到了
 - parallel scavenge（1.8默认）：a stop-the-world ,copying collector which use multiple GC threads，可清除几个G
