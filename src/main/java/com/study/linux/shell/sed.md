@@ -44,7 +44,7 @@ sed '3ihello'  1.txt    #在第三行之前插入hello
 
 sed '$chello'  1.txt  #将最后一行替换为hello
 
-sed '1~2d' 1.txt   #从第一行开始删除，每隔2行就删掉一行，即删除奇数行
+sed '1~2d' 1.txt    #从第一行开始删除，每隔2行就删掉一行，即删除奇数行
 
 
 kill -9 jps|grep '项目名'|awk {printf $5} ;
