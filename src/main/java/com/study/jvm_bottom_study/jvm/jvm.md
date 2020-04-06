@@ -24,11 +24,19 @@ old区的垃圾回收器：
     - 初始标记：标记根对象
     - 并发标记：顺着跟对象找
     - 重新标记：将标记错的对象再改回去
+
+## CMS 三色标记算法
+- 黑：自己已经标记，fields已标记完
+- 灰：自己已经标记，还没来得及标记fields
+- 白：没有遍历到的节点
+ 
+ 黑色标记完成之后，后来又指白色，就会有漏标，等Increamental Update来纠错
     
 一般组合：serial+serial old（少见了），parallel scavenge + parallel old，parnew+CMS
 
 分区回收：
 - G1+写屏障:上百G内存(物理上没分代逻辑上可以分代) ：三色标记+SATB算法 ![CMS](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/G1.png)
+
 - ZGC+读屏障:4T内存(物理上没分代逻辑上也没分代)：coloredPrinters算法 jdk11才出来
 - Shenandoah+读屏障：和ZGC是竞争关系
 - Epsilon：啥也不干，不进行任何gc（调试用/确认不用gc参与就能干完活）
