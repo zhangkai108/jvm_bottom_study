@@ -8,8 +8,8 @@ server:
   
 spring:
   profiles: dev
-    application:
-        name: spring-cloud-config-eureka-dept
+  application:
+    name: spring-cloud-config-eureka-dept
   
 eureka:
   instance:
@@ -27,8 +27,8 @@ server:
   
 spring:
   profiles: test
-    application:
-        name: spring-cloud-config-eureka-dept
+  application:
+    name: spring-cloud-config-eureka-dept
   
 eureka:
   instance:
