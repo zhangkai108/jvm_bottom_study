@@ -1,13 +1,13 @@
 # cpu
 ## 计算机组成图如下：
-![计算机组成](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/computer.png)
+![计算机组成](https://gitee.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/computer.png)
 - 内存：暂时存储程序以及数据的地方（cpu要调用的指令也存在这个地方）
 - 总线：cpu和内存数据交换的桥梁
 ## CPU组成：
 - 程序计数器（Program Counter，PC）：用来指出下一条指令在主存储器中的地址
 - Registers(各种其他寄存器)：存放从内存中拿来的即将执行的指令和数据
 - ALU：是算术逻辑单元，对数据进行运算
-- cache：![多核cpu缓存图](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/multiCoreCpu.png)因为cpu速度太快大概是缓存的100倍，所以要先把数据缓存起来，cpu计算取值先从L1，
+- cache：![多核cpu缓存图](https://gitee.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/multiCoreCpu.png)因为cpu速度太快大概是缓存的100倍，所以要先把数据缓存起来，cpu计算取值先从L1，
 没有再到L2、L3内存找，L1、L2一个核共享，L3多核共享，内存多cpu共享
 ## 超线程（如四核八线程）
 - 一个运算单元对应多个线程,cache line的概念缓存行对齐伪共享(把变量前后用空字符填满64位，也就是8个字节)；

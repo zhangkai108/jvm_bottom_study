@@ -14,8 +14,8 @@
     </dependencies>
 ```
  Obect o = new Object();占多少字节?
-![objectByte.jpg](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/objectByte.jpg)
-![objectByte.jpg](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/objectLayOut.jpg)
+![objectByte.jpg](https://gitee.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/objectByte.jpg)
+![objectByte.jpg](https://gitee.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/objectLayOut.jpg)
 -XX:+UseCompressedClassPointers ：表示指向对象指向所属class类型采用了压缩，由8字节压缩成4字节
 -XX:+UseCompressedOops ： 表示栈中该对象的引用也采用了压缩变成了4个字节
 所以一个Object所占字节为markword的8个字节+class printer的4个字节+0为12个字节，但是jvm是64位需要补齐8个字节才能读，所以一个object是16个字节
@@ -75,11 +75,11 @@ inflate方法：膨胀为重量级锁
 
 # 锁升级过程
 
-![lockUpGrade](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/lockUpGrade.png)
+![lockUpGrade](https://gitee.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/lockUpGrade.png)
 
 ## JDK8 markword实现表：
 
-![markword](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/markword.jpg)
+![markword](https://gitee.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/markword.jpg)
 
 把分代年龄调大为31解决频繁GC问题可以吗？不可以因为分代年龄只有4位，最大就15
 

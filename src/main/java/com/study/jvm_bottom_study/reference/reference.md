@@ -2,7 +2,7 @@
 ##强引用
 ##软引用
 ##弱引用
-![弱引用](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/weakReference.jpg)
+![弱引用](https://gitee.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/weakReference.jpg)
 ThreadLocal和当前线程有关，取得是当前线程带有的一个map然后存进去
  Entry extends WeakReference<ThreadLocal<?>>用虚引用是因为，当前线程只要结束ThreadLocal指向的就剩一个弱引用，垃圾回收器见到就会回收，
  不然一直存在一个强引用，垃圾回收期永远回收不了会造成内存泄漏。
@@ -42,5 +42,5 @@ ThreadLocalMap getMap(Thread t) {
 ```
 ##虚引用
 堆外内存管理（jvm可以直接将数据写到属于os的内存中去，但是gc不能直接监控os的内存，所以需要借助虚引用，不回收会造成内存泄漏）
-![堆外内存](https://github.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/offheapmemory.png)
+![堆外内存](https://gitee.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/offheapmemory.png)
 jvm 有专门的gc监控队列，当指向堆外内存在jvm的对象被回收时，就会把相关信息加入到队列，专门的gc发现队列有信息时，就把堆外内存回收
