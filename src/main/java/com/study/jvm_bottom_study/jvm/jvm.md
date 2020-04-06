@@ -40,3 +40,21 @@ old区的垃圾回收器：
 - ZGC+读屏障:4T内存(物理上没分代逻辑上也没分代)：coloredPrinters算法 jdk11才出来
 - Shenandoah+读屏障：和ZGC是竞争关系
 - Epsilon：啥也不干，不进行任何gc（调试用/确认不用gc参与就能干完活）
+
+
+
+
+##  jvm常用命令：
+- jmap 查看对立面的对象信息，有OOM则从可以从linux上dump下来对象信息 用jvisualvm分析
+- jstack 看线程死锁
+- java -XX:+UseG1GC -XX:MaxGCPauseMillis=200m -jar ...修改为G1垃圾回收器
+- jstat命令可以查看堆内存各部分的使用量，以及加载类的数量
+
+CMS 处理过程有七个步骤：
+1. 初始标记(CMS-initial-mark) ,会导致swt；
+2. 并发标记(CMS-concurrent-mark)，与用户线程同时运行；
+3. 预清理（CMS-concurrent-preclean），与用户线程同时运行；
+4. 可被终止的预清理（CMS-concurrent-abortable-preclean） 与用户线程同时运行；
+5. 重新标记(CMS-remark) ，会导致swt；
+6. 并发清除(CMS-concurrent-sweep)，与用户线程同时运行；
+7. 并发重置状态等待下次CMS的触发(CMS-concurrent-reset)，与用户线程同时运行；

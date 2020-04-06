@@ -99,7 +99,7 @@
    几十个G的内存，单线程回收 -> G1 + FGC 几十个G -> 上T内存的服务器 ZGC
    算法：三色标记 + Incremental Update
 9. G1(200ms - 10ms)
-   算法：三色标记 + SATB
+   算法：三色标记 + SATB（快照，对比后将消失的指针存到栈中）
 10. ZGC (10ms - 1ms) PK C++
    算法：ColoredPointers + LoadBarrier
 11. Shenandoah
@@ -409,7 +409,7 @@ total = eden + 1个survivor
    1：已经上线的系统不用图形界面用什么？（cmdline arthas）
    2：图形界面到底用在什么地方？测试！测试的时候进行监控！（压测观察）
 
-10. jmap - histo 4655 | head -20，查找有多少对象产生
+10. jmap -histo 4655 | head -20，查找有多少对象产生
 
 11. jmap -dump:format=b,file=xxx pid ：
 
