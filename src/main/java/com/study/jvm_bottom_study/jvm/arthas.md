@@ -16,8 +16,8 @@ linux下载arthas：curl -O https://alibaba.github.io/arthas/arthas-boot.jar
 
 
 ## 解决CPU100%疯狂GC (一般写了个死循环会这样)
-1. top -c 找出当前线程运行列表（按一下p可以按照cpu使用率排序），查看cpu消耗最高的进程
-2. top -Hp 进程号 找出进程下面的线程（按一下p可以按照cpu使用率排序）,找到消耗最高的线程号
+1. top -c 找出当前线程运行列表（按一下P大写的P可以按照cpu使用率排序），查看cpu消耗最高的进程
+2. top -Hp 进程号 找出进程下面的线程（按一下P大写的P可以按照cpu使用率排序）,找到消耗最高的线程号
 3. 将线程号十进制转成十六进制，
 4. 导出进程快照 jstack -l 线程号 > ./线程号.stack
 5. 使用grep查看线程做了什么 cat 线程号.stack | grep '线程号' -C 8
