@@ -20,6 +20,10 @@ docker exec -it id /bin/bash 不知为何mysql（应该是字符集的问题） 
 - flush privileges;
 - 这样zk用户就可以通过密码进入
 
+
+
+docker run  -itd -p 8700:8700 helloworld运行已经打包好的项目镜像
+
     
     
    
