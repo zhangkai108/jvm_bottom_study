@@ -1,4 +1,4 @@
-package com.study.jvm_bottom_study.highconcurrence.ReentranLock;
+package com.study.jvm_bottom_study.juc.ReentranLock;
 
 import java.util.concurrent.locks.LockSupport;
 

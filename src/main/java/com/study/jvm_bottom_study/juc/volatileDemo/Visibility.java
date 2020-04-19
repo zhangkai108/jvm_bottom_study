@@ -1,4 +1,4 @@
-package com.study.jvm_bottom_study.highconcurrence.volatileDemo;
+package com.study.jvm_bottom_study.juc.volatileDemo;
 
 /**
  * volatile可见性验证

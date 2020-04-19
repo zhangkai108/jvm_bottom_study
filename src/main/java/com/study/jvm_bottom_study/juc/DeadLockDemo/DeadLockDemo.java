@@ -1,4 +1,4 @@
-package com.study.jvm_bottom_study.highconcurrence.DeadLockDemo;
+package com.study.jvm_bottom_study.juc.DeadLockDemo;
 
 public class DeadLockDemo {
     public static void main(String[] args) {

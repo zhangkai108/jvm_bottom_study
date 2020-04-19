@@ -1,4 +1,4 @@
-package com.study.jvm_bottom_study.highconcurrence.volatileDemo;
+package com.study.jvm_bottom_study.juc.volatileDemo;
 
 /**
  * 缓存行对齐验证

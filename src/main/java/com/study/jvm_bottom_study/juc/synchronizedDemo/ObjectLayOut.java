@@ -1,6 +1,6 @@
-package com.study.jvm_bottom_study.highconcurrence.synchronizedDemo;
+package com.study.jvm_bottom_study.juc.synchronizedDemo;
 
-import com.study.jvm_bottom_study.highconcurrence.volatileDemo.DCLDemo;
+import com.study.jvm_bottom_study.juc.volatileDemo.DCLDemo;
 import org.openjdk.jol.info.ClassLayout;
 
 public class ObjectLayOut {

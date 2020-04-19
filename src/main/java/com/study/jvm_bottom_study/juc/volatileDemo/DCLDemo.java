@@ -1,6 +1,4 @@
-package com.study.jvm_bottom_study.highconcurrence.volatileDemo;
-
-import org.openjdk.jol.info.ClassLayout;
+package com.study.jvm_bottom_study.juc.volatileDemo;
 
 /**
  * 0 new #3  第一步1还是0
