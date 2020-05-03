@@ -3,7 +3,8 @@
 ##软引用
 ##弱引用
 ![弱引用](https://gitee.com/zhangkai108/jvm_bottom_study/blob/master/src/main/resources/mdImages/weakReference.jpg)
-ThreadLocal和当前线程有关，取得是当前线程带有的一个map然后存进去
+ThreadLocal和当前线程有关，取得是当前线程带有的一个map然后存进去，
+Spring的声明式事务用到了，保证同一个Connection
  Entry extends WeakReference<ThreadLocal<?>>用虚引用是因为，当前线程只要结束ThreadLocal指向的就剩一个弱引用，垃圾回收器见到就会回收，
  不然一直存在一个强引用，垃圾回收期永远回收不了会造成内存泄漏。
 ```java

@@ -9,11 +9,67 @@ reentrantlock用于替代synchronized
 需要注意的是，必须要必须要必须要手动释放锁（重要的事情说三遍）
 使用syn锁定的话如果遇到异常，jvm会自动释放锁，但是lock必须手动释放锁，因此经常在finally中进行锁的释放
 
+ReentrantLock里的wait方法一般不用一般和condition相结合使用
+比Synchronized里wait的好处就是你可以指定唤醒的队列，一个condition就相当于一个等待队列
+
+```java
+public static void main(String[] args) {
+
+        char[] aI = "1234567".toCharArray();
+        char[] aC = "ABCDEFG".toCharArray();
+
+        Lock lock = new ReentrantLock();
+        Condition conditionT1 = lock.newCondition();
+        Condition conditionT2 = lock.newCondition();
+
+        new Thread(()->{
+            try {
+                lock.lock();
+
+                for(char c : aI) {
+                    System.out.print(c);
+                    conditionT2.signal();
+                    conditionT1.await();
+                }
+
+                conditionT2.signal();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+
+        }, "t1").start();
+
+        new Thread(()->{
+            try {
+                lock.lock();
+
+                for(char c : aC) {
+                    System.out.print(c);
+                    conditionT1.signal();
+                    conditionT2.await();
+                }
+
+                conditionT1.signal();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+
+        }, "t2").start();
+    }
+```
+
 使用reentrantlock可以进行“尝试锁定”tryLock，这样无法锁定，或者在指定时间内无法锁定，线程可以决定是否继续等待
 
 使用ReentrantLock还可以调用lockInterruptibly方法，可以对线程interrupt方法做出响应，
 在一个线程等待锁的过程中，可以被打断
 
+VarHandle :1普通属性原子操作，2比反射快，直接操纵二进制码
 
 # countdownlatch
 门闩 等待所有线程结束 再往下执行 和join差不多
